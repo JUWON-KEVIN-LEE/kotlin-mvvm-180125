@@ -27,9 +27,9 @@ class Injector {
     private fun provideOkHttpClient() : OkHttpClient {
         return OkHttpClient.Builder()
                 .addInterceptor(provideHttpLoggingInterceptor())
-                .connectTimeout(45, TimeUnit.SECONDS)
-                .readTimeout(45, TimeUnit.SECONDS)
-                .writeTimeout(45, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
                 .build()
     }
 

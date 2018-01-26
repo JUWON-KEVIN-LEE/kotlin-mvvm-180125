@@ -24,6 +24,7 @@ class SearchViewModel(var dataListener: DataListener?) : ViewModel{
 
     var textInfo : ObservableField<String>
 
+    var disposable : DisposableObserver<List<SearchItem>>? = null
     var searchItems : List<SearchItem>? = null
 
     lateinit var editTextSearchContent : String
@@ -64,10 +65,10 @@ class SearchViewModel(var dataListener: DataListener?) : ViewModel{
         val injector = Injector()
         val api = injector.provideApi()
 
-        api.search("test")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+        disposable = api.search("TEST ID")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(OperationObserver())
     }
 
     interface DataListener {
@@ -82,20 +83,34 @@ class SearchViewModel(var dataListener: DataListener?) : ViewModel{
         // test
         override fun onError(e: Throwable?) {
             var searchItem = SearchItem()
-            searchItem.imageUrl = "http://t1.daumcdn.net/thumb/R1024x0/?fname=http://i.imgur.com/loyqia9.gif"
-
+            searchItem._id = "TEST ID"
+            searchItem.imageUrl = "https://avatars0.githubusercontent.com/u/2928633?s=88&v=4"
+            searchItem.title = "TITLE : HELLO MVVM WITH KOTLIN TEST"
+            searchItem.tutorName = "JUWON KEVIN LEE"
             var searchItems = ArrayList<SearchItem>()
             searchItems.add(searchItem)
 
             dataListener?.onSearchItemsChanged(searchItems)
+
+            progressVisibility.set(View.INVISIBLE)
+            recyclerViewVisibility.set(View.VISIBLE)
         }
 
         override fun onComplete() {
+            dataListener?.onSearchItemsChanged(searchItems!!)
+            progressVisibility.set(View.INVISIBLE)
 
+            if(!searchItems?.isEmpty()!!) {
+                recyclerViewVisibility.set(View.VISIBLE)
+            } else {
+                textInfo.set("No search Result.")
+                textInfoVisibility.set(View.VISIBLE)
+            }
         }
     }
 
     override fun destroy() {
-
+        if(!disposable?.isDisposed!!) disposable?.dispose()
+        dataListener = null
     }
 }

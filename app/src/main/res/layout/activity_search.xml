@@ -42,8 +42,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:ems="10"
@@ -53,7 +55,7 @@
                 android:paddingTop="8dp"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/darker_gray"
-                app:addTextChangedListener="@{viewModel.searchEditTextWatcher}"/>
+                app:addTextChangedListener="@{viewModel.searchEditTextWatcher}" />
 
             <ImageButton
                 android:id="@+id/search_button"
@@ -95,7 +97,7 @@
             android:visibility="@{viewModel.textInfoVisibility}"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/search_layout"
